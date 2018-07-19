@@ -22,7 +22,6 @@ RUN apk update \
     && ./gradlew war
 
 
-
 FROM payara/micro
 ARG TIMESTAMP
 
