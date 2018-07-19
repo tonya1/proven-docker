@@ -8,6 +8,8 @@ usage () {
 
 TAG="$TRAVIS_BRANCH"
 
+DOCKER_PROJECT="${DOCKER_PROJECT:-$MYDOCKER_PROJECT}"
+
 ORG=`echo $DOCKER_PROJECT | tr '[:upper:]' '[:lower:]'`
 ORG="${ORG:+${ORG}/}"
 IMAGE="${ORG}gridappsd/proven"
