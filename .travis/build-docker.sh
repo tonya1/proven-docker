@@ -12,7 +12,7 @@ DOCKER_PROJECT="${DOCKER_PROJECT:-$MYDOCKER_PROJECT}"
 
 ORG=`echo $DOCKER_PROJECT | tr '[:upper:]' '[:lower:]'`
 ORG="${ORG:+${ORG}/}"
-IMAGE="${ORG}gridappsd/proven"
+IMAGE="${ORG}proven"
 TIMESTAMP=`date +'%y%m%d%H'`
 GITHASH=`git log -1 --pretty=format:"%h"`
 
