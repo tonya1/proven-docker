@@ -3,9 +3,23 @@
 # Extend the payara/micro container to run the hybrid service
 ###
 
+FROM openjdk:8-jdk-alpine AS alibababuild
+
+RUN apk update \
+    && apk upgrade \
+    && apk add --no-cache git apache-ant maven\
+    && mkdir /build \
+    && cd /build \
+    && git clone https://bitbucket.org/openrdf/alibaba.git -b '2.0' \
+    && cd alibaba  \
+    && mvn -Dmaven.test.skip=true source:jar package install \
+    && ant build-sdk
+
+
 FROM openjdk:8-jdk-alpine AS provenbuild
 
-ADD ./proven-dependencies/alibaba-2.0.jar /root/.m2/repository/org/openrdf/alibaba/alibaba/2.0/alibaba-2.0.jar
+COPY --from=alibababuild /build/alibaba/target/openrdf-alibaba-2.0.jar /root/.m2/repository/org/openrdf/alibaba/alibaba/2.0/alibaba-2.0.jar
+#ADD ./proven-dependencies/alibaba-2.0.jar /root/.m2/repository/org/openrdf/alibaba/alibaba/2.0/alibaba-2.0.jar
 RUN apk update \
     && apk upgrade \
     && apk add --no-cache git \
