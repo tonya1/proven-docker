@@ -12,7 +12,7 @@ RUN apk update \
     && cd /build \
     && git clone https://bitbucket.org/openrdf/alibaba.git -b '2.0' \
     && cd alibaba  \
-    && mvn -Dmaven.test.skip=true source:jar package install \
+    && mvn -X -Dmaven.test.skip=true source:jar package install \
     && ant build-sdk
 
 
