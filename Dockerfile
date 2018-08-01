@@ -10,15 +10,18 @@ RUN apk update \
     && apk add --no-cache git apache-ant maven\
     && mkdir /build \
     && cd /build \
-    && git clone https://bitbucket.org/openrdf/alibaba.git -b '2.0' \
+    && git clone https://bitbucket.org/openrdf/alibaba.git -b 'v2.1' \
     && cd alibaba  \
-    && mvn -X -Dmaven.test.skip=true source:jar package install \
-    && ant build-sdk
+    && ant dist
 
+    #&& mvn -X -Dmaven.test.skip=true source:jar package install \
+    #&& ant build-sdk
+    #&& git clone https://bitbucket.org/openrdf/alibaba.git -b '2.0' \
 
 FROM openjdk:8-jdk-alpine AS provenbuild
 
-COPY --from=alibababuild /build/alibaba/target/openrdf-alibaba-2.0.jar /root/.m2/repository/org/openrdf/alibaba/alibaba/2.0/alibaba-2.0.jar
+#COPY --from=alibababuild /build/alibaba/target/openrdf-alibaba-2.0.jar /root/.m2/repository/org/openrdf/alibaba/alibaba/2.0/alibaba-2.0.jar
+COPY --from=alibababuild /build/alibaba/target/openrdf-alibaba-2.1.jar /root/.m2/repository/org/openrdf/alibaba/alibaba/2.0/alibaba-2.1.jar
 #ADD ./proven-dependencies/alibaba-2.0.jar /root/.m2/repository/org/openrdf/alibaba/alibaba/2.0/alibaba-2.0.jar
 RUN apk update \
     && apk upgrade \
