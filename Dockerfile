@@ -14,6 +14,7 @@ RUN apk update \
     && cd alibaba  \
     && sed -i 's/javassist.url           = http:/javassist.url           = https:/' dependencies.properties \
     && sed -i 's/slf4j.url               = http:/slf4j.url               = https:/' dependencies.properties \
+    && sed -i 's/openrdf-sesame.url      = http:/openrdf-sesame.url      = https:/' dependencies.properties \
     && mvn -Dmaven.test.skip=true source:jar package install \
     && ant build-sdk
 
