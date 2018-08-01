@@ -13,7 +13,8 @@ RUN apk update \
     && git clone https://bitbucket.org/openrdf/alibaba.git -b '2.0' \
     && cd alibaba  \
     && sed -i 's/javassist.url           = http:/javassist.url           = https:/' dependencies.properties \
-    && mvn -X -Dmaven.test.skip=true source:jar package install \
+    && sed -i 's/slf4j.url               = http:/slf4j.url               = https:/' dependencies.properties \
+    && mvn -Dmaven.test.skip=true source:jar package install \
     && ant build-sdk
 
 FROM openjdk:8-jdk-alpine AS provenbuild
