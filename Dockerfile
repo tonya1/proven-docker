@@ -22,9 +22,13 @@ FROM openjdk:8-jdk-alpine AS provenbuild
 
 ARG SOURCE_BRANCH 
 ARG CACHE_TAG
+ARG IMAGE_NAME
+ARG MYVAR
 
 RUN echo "SOURCE_BRANCH : $SOURCE_BRANCH" \
-    && echo "CACHE_TAG : $CACHE_TAG"
+    && echo "CACHE_TAG  : $CACHE_TAG" \
+    && echo "IMAGE_NAME : $IMAGE_NAME" \
+    && echo "MYVAR : $MYVAR"
 
 COPY --from=alibababuild /build/alibaba/target/openrdf-alibaba-2.0.jar /root/.m2/repository/org/openrdf/alibaba/alibaba/2.0/alibaba-2.0.jar
 #ADD ./proven-dependencies/alibaba-2.0.jar /root/.m2/repository/org/openrdf/alibaba/alibaba/2.0/alibaba-2.0.jar
