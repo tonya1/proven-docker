@@ -20,6 +20,11 @@ RUN apk update \
 
 FROM openjdk:8-jdk-alpine AS provenbuild
 
+ARG SOURCE_BRANCH CACHE_TAG
+
+RUN echo "SOURCE_BRANCH : $SOURCE_BRANCH" \
+    && echo "CACHE_TAG : $CACHE_TAG"
+
 COPY --from=alibababuild /build/alibaba/target/openrdf-alibaba-2.0.jar /root/.m2/repository/org/openrdf/alibaba/alibaba/2.0/alibaba-2.0.jar
 #ADD ./proven-dependencies/alibaba-2.0.jar /root/.m2/repository/org/openrdf/alibaba/alibaba/2.0/alibaba-2.0.jar
 RUN apk update \
