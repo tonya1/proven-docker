@@ -1,7 +1,3 @@
-###
-# Build the proven hybrid service
-# Extend the payara/micro container to run the hybrid service
-###
 
 FROM openjdk:8-jdk-alpine 
 
