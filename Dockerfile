@@ -3,25 +3,25 @@
 # Extend the payara/micro container to run the hybrid service
 ###
 
-FROM openjdk:8-jdk-alpine AS alibababuild
-
-RUN apk update \
-    && apk upgrade \
-    && apk add --no-cache git apache-ant maven nss \
-    && mkdir /build \
-    && cd /build \
-    && git -c advice.detachedHead=false clone https://bitbucket.org/openrdf/alibaba.git -b '2.0' \
-    && cd alibaba  \
-    && sed -i 's/javassist.url           = http:/javassist.url           = https:/' dependencies.properties \
-    && sed -i 's/slf4j.url               = http:/slf4j.url               = https:/' dependencies.properties \
-    && sed -i 's/openrdf-sesame.url      = http:/openrdf-sesame.url      = https:/' dependencies.properties \
-    && mvn -B -q -Dmaven.test.skip=true source:jar package install \
-    && ant build-sdk
-
+# FROM openjdk:8-jdk-alpine AS alibababuild
+# 
+# RUN apk update \
+#     && apk upgrade \
+#     && apk add --no-cache git apache-ant maven nss \
+#     && mkdir /build \
+#     && cd /build \
+#     && git -c advice.detachedHead=false clone https://bitbucket.org/openrdf/alibaba.git -b '2.0' \
+#     && cd alibaba  \
+#     && sed -i 's/javassist.url           = http:/javassist.url           = https:/' dependencies.properties \
+#     && sed -i 's/slf4j.url               = http:/slf4j.url               = https:/' dependencies.properties \
+#     && sed -i 's/openrdf-sesame.url      = http:/openrdf-sesame.url      = https:/' dependencies.properties \
+#     && mvn -B -q -Dmaven.test.skip=true source:jar package install \
+#     && ant build-sdk
+# 
 FROM openjdk:8-jdk-alpine AS provenbuild
 ARG TIMESTAMP
 
-COPY --from=alibababuild /build/alibaba/target/openrdf-alibaba-2.0.jar /root/.m2/repository/org/openrdf/alibaba/alibaba/2.0/alibaba-2.0.jar
+COPY dep/openrdf-alibaba-2.0.jar /root/.m2/repository/org/openrdf/alibaba/alibaba/2.0/alibaba-2.0.jar
 RUN echo $TIMESTAMP > /dockerbuildversion.txt \
     && echo $TIMESTAMP \
     && apk update \
@@ -37,7 +37,7 @@ RUN echo $TIMESTAMP > /dockerbuildversion.txt \
     && ./gradlew build \
     && ./gradlew publishToMavenLocal \
     && cd /build \
-    && git -c advice.detachedHead=false clone https://github.com/pnnl/proven-cluster.git -b 'v1.3.5.10' --single-branch \
+    && git -c advice.detachedHead=false clone https://github.com/pnnl/proven-cluster.git -b 'v1.3.5.11' --single-branch \
     && cd /build/proven-cluster/proven-member \
     && git log -1 --pretty=format:"%h" >> /dockerbuildversion.txt \
     && echo ' : proven-cluster' >> /dockerbuildversion.txt \
